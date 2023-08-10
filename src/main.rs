@@ -70,7 +70,6 @@ impl Sandbox for App {
     fn update(&mut self, message: Message) {
         match message {
             Message::ThemeChanged(theme_type) => {
-                println!("{:?}", theme_type);
                 match theme_type {
                     ThemeType::Light => {
                         self.theme = Theme::Light
