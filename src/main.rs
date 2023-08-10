@@ -33,6 +33,7 @@ enum Message {
     ThemeChanged(ThemeType),
     IncrementPressed(Team),
     DecrementPressed(Team),
+    ClearScores,
     PageBack,
     PageForward,
 }
@@ -100,6 +101,10 @@ impl Sandbox for App {
                     }
                 }
             }
+            Message::ClearScores => {
+                self.team_one_score = 0;
+                self.team_two_score = 0;
+            }
             Message::PageForward => {
                 if self.page < self.pages {
                     self.page += 1;
@@ -139,6 +144,7 @@ impl Sandbox for App {
                     AppButton::view(&AppButton {button_type: ButtonType::TeamOneCounter(CountType::Decrement)}, "Take Point from Team 1"),
                     AppButton::view(&AppButton {button_type: ButtonType::TeamTwoCounter(CountType::Increment)}, "Give Point to Team 2"),
                     AppButton::view(&AppButton {button_type: ButtonType::TeamTwoCounter(CountType::Decrement)}, "Take Point from Team 2"),
+                    AppButton::view(&AppButton {button_type: ButtonType::ClearScores}, ""),
                     AppButton::view(&AppButton {button_type: ButtonType::Settings}, "")
                 ]
                 .padding(20)
@@ -205,6 +211,7 @@ enum ButtonType {
     Settings,
     TeamOneCounter(CountType),
     TeamTwoCounter(CountType),
+    ClearScores,
 }
 
 
@@ -220,7 +227,7 @@ impl AppButton {
                 column![
                     button("Settings").on_press(Message::PageForward)
                 ]
-                .padding(20)
+                .padding(15)
                 .align_items(Alignment::Center)
                 .into()
             }
@@ -279,7 +286,16 @@ impl AppButton {
                     }
                 }
             }
+            
+            ButtonType::ClearScores => {
+                column![
+                    button("Clear Scores").on_press(Message::ClearScores).width(500)
+                ]
+                .width(Length::Fill)
+                .align_items(Alignment::Center)
+                .padding(10)
+                .into()
             }
         }
-        
     }
+}
